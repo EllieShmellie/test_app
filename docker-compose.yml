@@ -36,7 +36,8 @@ services:
       - dbdata:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 1s
-      timeout: 1s
+      interval: 20s
+      timeout: 10s
+      retries: 4
 volumes:
   dbdata:
