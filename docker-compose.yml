@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  app:
+    build: .
+    container_name: yii2_app
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    command: >
+      bash -c "composer install && php yii migrate --interactive=0 && apache2-foreground"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_NAME=testdb
+      - DB_USER=root
+      - DB_PASSWORD=secret
+      - ALLOWED_DOMAIN=example.com
+      - TZ='Europe/Moscow'
+      - PHP_IDE_CONFIG=serverName=Docker
+    extra_hosts:
+      - host.docker.internal:host-gateway
+  db:
+    image: mysql:8.0
+    container_name: yii2_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: testdb
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 1s
+      timeout: 1s
+volumes:
+  dbdata:

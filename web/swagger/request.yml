@@ -1,0 +1,96 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "API для тикетов"
+paths:
+  /requests:
+    post:
+      summary: "Создание нового тикета."
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "request"
+          description: "Данные тикета."
+          schema:
+            $ref: "#/definitions/RequestInput"
+      responses:
+        201:
+          description: "Тикет успешно создан."
+    get:
+      summary: "Получение списка тикетов."
+      parameters:
+        - in: "query"
+          name: "status"
+          type: "string"
+          description: "Фильтр по статусу."
+        - in: "query"
+          name: "created_at"
+          type: "integer"
+          description: "Фильтр по дате создания (timestamp)."
+      responses:
+        200:
+          description: "Список тикетов."
+  /requests/{request_id}:
+    put:
+      summary: "Обновление тикета (перевод в статус Resolved)."
+      parameters:
+        - in: "path"
+          name: "request_id"
+          required: true
+          type: "integer"
+          description: "ID тикета."
+        - in: "body"
+          name: "request"
+          description: "Данные для обновления тикета."
+          schema:
+            type: "object"
+            properties:
+              comment:
+                type: "string"
+              status:
+                type: "string"
+                enum:
+                  - "Resolved"
+      responses:
+        200:
+          description: "Тикет успешно обновлён."
+definitions:
+  Request:
+    type: "object"
+    properties:
+      request_id:
+        type: "integer"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      status:
+        type: "string"
+        enum:
+          - "Active"
+          - "Resolved"
+      message:
+        type: "string"
+      comment:
+        type: "string"
+      created_at:
+        type: "integer"
+      updated_at:
+        type: "integer"
+  RequestInput:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      status:
+        type: "string"
+        enum:
+          - "Active"
+          - "Resolved"
+      message:
+        type: "string"
+      comment:
+        type: "string"
