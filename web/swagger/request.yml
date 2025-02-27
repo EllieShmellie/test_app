@@ -85,12 +85,5 @@ definitions:
         type: "string"
       email:
         type: "string"
-      status:
-        type: "string"
-        enum:
-          - "Active"
-          - "Resolved"
       message:
-        type: "string"
-      comment:
         type: "string"
