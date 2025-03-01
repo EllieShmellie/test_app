@@ -24,8 +24,8 @@ class MailService
         MailerInterface $mailer = null,
         $defaultSender = null
     ) {
-        $this->mailer = $mailer ?: Yii::$app->mailer;
-        $this->defaultSender = $defaultSender ?: Yii::$app->params['adminEmail'] ?? 'noreply@example.com';
+        $this->mailer = $mailer;
+        $this->defaultSender = $defaultSender;
     }
     
     /**
@@ -35,7 +35,7 @@ class MailService
      * @param string $from
      * @return bool 
      */
-    public function sendTemplate($template, $to, array $params = [], $from = null)
+    public function sendTemplate($template, $to, array $params = [], $from = null): bool
     {
         $from = $from ?: $this->defaultSender;
         $subject = $params['subject'] ?? 'Уведомление';

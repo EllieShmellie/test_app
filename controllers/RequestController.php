@@ -42,7 +42,7 @@ class RequestController extends Controller
         
         $behaviors['authenticator'] = [
             'class' => HttpBasicAuth::class,
-            'except' => ['post', 'options'],
+            'except' => ['create', 'options'],
             'auth' => function ($username, $password) {
                 $user = User::findByUsername($username);
                 if ($user && $user->validatePassword($password) && $user->username === 'admin') {
